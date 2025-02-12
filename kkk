@@ -1,0 +1,50 @@
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button } from 'react-native';
+import PushNotification from 'react-native-push-notification';
+
+const App = () => {
+  const [lessonName, setLessonName] = useState('');
+  const [dateAndTime, setDateAndTime] = useState('');
+
+  useEffect(() => {
+    PushNotification.configure({
+      // تنظیمات هشدار...
+    });
+  }, []);
+
+  const saveReminder = () => {
+    // ذخیره یادآوری در پایگاه داده...
+    
+    // تنظیم هشدار...
+    PushNotification.localNotificationSchedule({
+      message: `مرور ${lessonName} را فراموش نکن!`,
+      date: new Date(dateAndTime),
+      allowWhileIdle: true,
+    });
+    
+    console.log('یادآوری ثبت شد.');
+  };
+
+  return (
+    <View>
+      <TextInput 
+        placeholder="نام درس"
+        value={lessonName}
+        onChangeText={setLessonName}
+      />
+      
+      <TextInput 
+        placeholder="تاریخ و ساعت"
+        value={dateAndTime}
+        onChangeText={setDateAndTime}
+      />
+      
+      <Button title="ثبت یادآوری" onPress={saveReminder} />
+      
+      {/* نمایش لیست کارهای آینده */}
+      
+    </View>
+  );
+};
+
+export default App;
